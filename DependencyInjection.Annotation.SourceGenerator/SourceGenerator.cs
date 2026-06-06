@@ -6,7 +6,7 @@ namespace DependencyInjection.Annotation.SourceGenerator
 {
     [Generator]
     public sealed class SourceGenerator : ISourceGenerator
-    {      
+    {
         private static readonly string fileName = "ServiceCollectionExtensions.g.cs";
         private static readonly string className = "ServiceCollectionExtensions_G";
 
@@ -38,7 +38,12 @@ namespace DependencyInjection.Annotation.SourceGenerator
         private static string GetAssemblyName(Compilation compilation)
         {
             var assemblyName = compilation.AssemblyName ?? string.Empty;
-            return new string(assemblyName.Where(IsAllowChar).ToArray());
+            var chars = assemblyName.Where(IsAllowChar).ToArray();
+            if (chars.Length > 0)
+            {
+                chars[0] = char.ToUpper(chars[0]);
+            }
+            return new string(chars);
 
             static bool IsAllowChar(char c)
             {
